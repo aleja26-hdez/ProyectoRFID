@@ -13,7 +13,7 @@ app.use(express.json());
 const usuariosRoutes = require("./routes/usuarios");
 const empleadosRouter = require("./routes/empleados");
 const serviciosRouter = require("./routes/servicios");
-const turnosClientesRouter = require("./routes/turnosClientes"); // 👈 agregado aquí
+const turnosClientesRouter = require("./routes/turnosclientes"); // 👈 agregado aquí
 
 app.use("/usuarios", usuariosRoutes);
 app.use("/empleados", empleadosRouter);
