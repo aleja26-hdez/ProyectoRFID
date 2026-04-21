@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+<button onclick="enviar()">Enviar POST</button>
+
+<script>
+function enviar() {
+  fetch("http://localhost:3000/usuarios", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nombre: "Nicolle",
+      apellido: "Hernandez",
+      email: "nico@gmail.com"
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+}
+</script>
+
+</body>
+</html>
