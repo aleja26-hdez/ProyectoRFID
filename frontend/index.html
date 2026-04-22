@@ -18,12 +18,15 @@
       padding: 20px;
       border-radius: 10px;
       text-align: center;
+      margin-top: 100px;
     }
 
     input {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     button {
@@ -34,6 +37,11 @@
       color: white;
       border: none;
       cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #0056b3;
     }
 
     #msg {
@@ -49,7 +57,6 @@
 
   <h2>🔐 Ingreso al Sistema RFID</h2>
 
-  <!-- LOGIN SOLO CÉDULA -->
   <input type="text" id="cedula" placeholder="Ingrese su cédula">
 
   <button onclick="login()">Entrar</button>
@@ -59,13 +66,25 @@
 </div>
 
 <script>
+
+// 🌐 TU BACKEND EN RENDER
 const API_URL = "https://proyectorfid-2.onrender.com";
 
 // 🔐 LOGIN SOLO CON CÉDULA
 function login() {
-  const cedulaValue = document.getElementById("cedula").value;
 
-  fetch(`${API_URL}/login-cedula`, {
+  const cedulaValue = document.getElementById("cedula").value;
+  const msg = document.getElementById("msg");
+
+  if (!cedulaValue) {
+    msg.innerText = "Ingresa la cédula";
+    return;
+  }
+
+  msg.style.color = "black";
+  msg.innerText = "Verificando...";
+
+  fetch(`${API_URL}/turnosclientes/login-cedula`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -76,20 +95,35 @@ function login() {
   })
   .then(res => res.json())
   .then(data => {
+
     if (data.ok) {
-      // guardar usuario en sesión
+
+      // guardar usuario en localStorage
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // ir a selección de servicios
-      window.location.href = "services.html";
+      msg.style.color = "green";
+      msg.innerText = "✔ Login correcto";
+
+      // redirigir a servicios
+      setTimeout(() => {
+        window.location.href = "services.html";
+      }, 1000);
+
     } else {
-      document.getElementById("msg").innerText = data.msg;
+
+      msg.style.color = "red";
+      msg.innerText = data.msg;
+
     }
+
   })
   .catch(err => {
-    document.getElementById("msg").innerText = "Error de conexión";
+    console.error(err);
+    msg.style.color = "red";
+    msg.innerText = "❌ Error de conexión con el servidor";
   });
 }
+
 </script>
 
 </body>
