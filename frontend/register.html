@@ -1,0 +1,21 @@
+<script>
+function registrar() {
+  fetch(`${API_URL}/usuarios`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      nombre: nombre.value,
+      apellido: apellido.value,
+      cedula: cedula.value,
+      telefono: telefono.value,
+      placa: placa.value,
+      password: password.value
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("Usuario registrado");
+    window.location.href = "services.html";
+  });
+}
+</script>

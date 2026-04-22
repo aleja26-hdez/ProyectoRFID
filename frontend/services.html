@@ -1,0 +1,12 @@
+<h2>Selecciona Servicio</h2>
+
+<button onclick="select('mantenimiento')">Mantenimiento</button>
+<button onclick="select('venta')">Venta</button>
+<button onclick="select('entrega')">Entrega</button>
+
+<script>
+function select(servicio) {
+  localStorage.setItem("servicio", servicio);
+  window.location.href = "rfid.html";
+}
+</script>

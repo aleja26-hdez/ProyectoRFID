@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema RFID - Turnos</title>
+  <title>Login RFID - Turnos</title>
+
   <style>
     body {
       font-family: Arial;
@@ -10,47 +11,34 @@
       padding: 20px;
     }
 
-    h1 {
-      text-align: center;
-    }
-
     .container {
-      max-width: 800px;
+      max-width: 500px;
       margin: auto;
       background: white;
       padding: 20px;
       border-radius: 10px;
+      text-align: center;
     }
 
     input {
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
+      margin-top: 10px;
     }
 
     button {
-      padding: 10px;
       width: 100%;
+      padding: 10px;
+      margin-top: 15px;
       background: #007bff;
       color: white;
       border: none;
       cursor: pointer;
+    }
+
+    #msg {
       margin-top: 10px;
-    }
-
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: center;
+      color: red;
     }
   </style>
 </head>
@@ -59,86 +47,49 @@
 
 <div class="container">
 
-  <h1>🚀 Sistema RFID Turnos</h1>
+  <h2>🔐 Ingreso al Sistema RFID</h2>
 
-  <!-- FORMULARIO -->
-  <h3>Registrar Usuario</h3>
+  <!-- LOGIN SOLO CÉDULA -->
+  <input type="text" id="cedula" placeholder="Ingrese su cédula">
 
-  <input type="text" id="nombre" placeholder="Nombre">
-  <input type="text" id="apellido" placeholder="Apellido">
-  <input type="text" id="cedula" placeholder="Cédula">
+  <button onclick="login()">Entrar</button>
 
-  <button onclick="crearUsuario()">Guardar</button>
-
-  <!-- TABLA -->
-  <h3>Usuarios Registrados</h3>
-
-  <button onclick="cargarUsuarios()">Cargar Usuarios</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Cédula</th>
-      </tr>
-    </thead>
-    <tbody id="tablaUsuarios"></tbody>
-  </table>
+  <p id="msg"></p>
 
 </div>
 
 <script>
-const API_URL = "https://proyectorfid-2.onrender.com"; // 👈 cambia esto
+const API_URL = "https://proyectorfid-2.onrender.com";
 
-// 🔹 OBTENER USUARIOS
-function cargarUsuarios() {
-  fetch(`${API_URL}/usuarios`)
-    .then(res => res.json())
-    .then(data => {
-      const tabla = document.getElementById("tablaUsuarios");
-      tabla.innerHTML = "";
+// 🔐 LOGIN SOLO CON CÉDULA
+function login() {
+  const cedulaValue = document.getElementById("cedula").value;
 
-      data.forEach(u => {
-        tabla.innerHTML += `
-          <tr>
-            <td>${u.nombre}</td>
-            <td>${u.apellido}</td>
-            <td>${u.cedula}</td>
-          </tr>
-        `;
-      });
-    })
-    .catch(err => console.log(err));
-}
-
-// 🔹 CREAR USUARIO
-function crearUsuario() {
-  const nombre = document.getElementById("nombre").value;
-  const apellido = document.getElementById("apellido").value;
-  const cedula = document.getElementById("cedula").value;
-
-  fetch(`${API_URL}/usuarios`, {
+  fetch(`${API_URL}/login-cedula`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      nombre,
-      apellido,
-      cedula
+      cedula: cedulaValue
     })
   })
   .then(res => res.json())
   .then(data => {
-    alert("Usuario creado ✔");
-    cargarUsuarios();
-  })
-  .catch(err => console.log(err));
-}
+    if (data.ok) {
+      // guardar usuario en sesión
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-// 🔥 cargar al iniciar
-cargarUsuarios();
+      // ir a selección de servicios
+      window.location.href = "services.html";
+    } else {
+      document.getElementById("msg").innerText = data.msg;
+    }
+  })
+  .catch(err => {
+    document.getElementById("msg").innerText = "Error de conexión";
+  });
+}
 </script>
 
 </body>
