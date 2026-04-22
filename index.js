@@ -14,11 +14,13 @@ const usuariosRoutes = require("./routes/usuarios");
 const empleadosRouter = require("./routes/empleados");
 const serviciosRouter = require("./routes/servicios");
 const turnosClientesRouter = require("./routes/turnosclientes"); // 👈 agregado aquí
+const rfidRoutes = require("./routes/rfid");
 
 app.use("/usuarios", usuariosRoutes);
 app.use("/empleados", empleadosRouter);
 app.use("/servicios", serviciosRouter);
 app.use("/turnosclientes", turnosClientesRouter); // 👈 agregado aquí
+app.use("/rfid", rfidRoutes);
 
 // 🧪 RUTA DE PRUEBA
 app.get("/", (req, res) => {
