@@ -1,129 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Login RFID - Turnos</title>
-
-  <style>
-    body {
-      font-family: Arial;
-      background: #f2f2f2;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      margin-top: 100px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    #msg {
-      margin-top: 10px;
-      color: red;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Login RFID</title>
 </head>
-
 <body>
 
-<div class="container">
+<h2>🔐 Ingreso al Sistema RFID</h2>
 
-  <h2>🔐 Ingreso al Sistema RFID</h2>
+<input type="text" id="cedula" placeholder="Ingrese cédula">
+<button onclick="login()">Entrar</button>
 
-  <input type="text" id="cedula" placeholder="Ingrese su cédula">
+<p id="msg"></p>
 
-  <button onclick="login()">Entrar</button>
-
-  <p id="msg"></p>
-
-</div>
+<script src="api.js"></script>
 
 <script>
-
-// 🌐 TU BACKEND EN RENDER
-const API_URL = "https://proyectorfid-2.onrender.com";
-
-// 🔐 LOGIN SOLO CON CÉDULA
 function login() {
-
-  const cedulaValue = document.getElementById("cedula").value;
+  const cedula = document.getElementById("cedula").value;
   const msg = document.getElementById("msg");
 
-  if (!cedulaValue) {
-    msg.innerText = "Ingresa la cédula";
+  if (!cedula) {
+    msg.innerText = "Ingrese la cédula";
     return;
   }
 
-  msg.style.color = "black";
-  msg.innerText = "Verificando...";
-
   fetch(`${API_URL}/turnosclientes/login-cedula`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      cedula: cedulaValue
-    })
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ cedula })
   })
   .then(res => res.json())
   .then(data => {
 
     if (data.ok) {
-
-      // guardar usuario en localStorage
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      msg.style.color = "green";
-      msg.innerText = "✔ Login correcto";
-
-      // redirigir a servicios
-      setTimeout(() => {
-        window.location.href = "services.html";
-      }, 1000);
-
+      window.location.href = "services.html";
     } else {
-
-      msg.style.color = "red";
       msg.innerText = data.msg;
-
     }
 
   })
-  .catch(err => {
-    console.error(err);
-    msg.style.color = "red";
-    msg.innerText = "❌ Error de conexión con el servidor";
+  .catch(() => {
+    msg.innerText = "Error de conexión";
   });
 }
-
 </script>
 
 </body>

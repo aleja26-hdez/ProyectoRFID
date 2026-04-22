@@ -1,27 +1,59 @@
-<h2>Acerque su tarjeta RFID</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>RFID</title>
+</head>
+<body>
+
+<h2>Simular RFID</h2>
 
 <p id="estado">Esperando tarjeta...</p>
 
-<input id="uid" placeholder="Simular UID">
-
-<button onclick="simular()">Simular RFID</button>
+<input id="uid" placeholder="UID RFID">
+<button onclick="simular()">Simular</button>
 
 <script src="api.js"></script>
+
 <script>
 function simular() {
+
+  const estado = document.getElementById("estado");
+  const uid = document.getElementById("uid").value;
+
   const user = JSON.parse(localStorage.getItem("user"));
+  const servicio = localStorage.getItem("servicio");
+
+  if (!user) {
+    estado.innerText = "❌ No hay usuario logueado";
+    return;
+  }
+
+  if (!uid) {
+    estado.innerText = "❌ Ingresa UID RFID";
+    return;
+  }
 
   fetch(`${API_URL}/rfid`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      uid: uid.value,
-      cedula: user.cedula
+      uid: uid,
+      cedula: user.cedula,
+      servicio: servicio
     })
   })
   .then(res => res.json())
   .then(data => {
-    document.getElementById("estado").innerText = data.msg;
+    estado.innerText = data.msg;
+  })
+  .catch(err => {
+    console.log(err);
+    estado.innerText = "❌ Error RFID / servidor";
   });
+
 }
 </script>
+
+</body>
+</html>

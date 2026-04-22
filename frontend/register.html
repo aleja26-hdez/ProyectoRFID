@@ -1,21 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro</title>
+</head>
+<body>
+
+<h2>Registro de Usuario</h2>
+
+<input id="nombre" placeholder="Nombre">
+<input id="apellido" placeholder="Apellido">
+<input id="cedula" placeholder="Cédula">
+<input id="telefono" placeholder="Teléfono">
+<input id="placa" placeholder="Placa">
+
+<button onclick="registrar()">Registrar</button>
+
+<p id="msg"></p>
+
+<script src="api.js"></script>
+
 <script>
 function registrar() {
+
+  const msg = document.getElementById("msg");
+
   fetch(`${API_URL}/usuarios`, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
-      nombre: nombre.value,
-      apellido: apellido.value,
-      cedula: cedula.value,
-      telefono: telefono.value,
-      placa: placa.value,
-      password: password.value
+      nombre: document.getElementById("nombre").value,
+      apellido: document.getElementById("apellido").value,
+      cedula: document.getElementById("cedula").value,
+      telefono: document.getElementById("telefono").value,
+      placa: document.getElementById("placa").value
     })
   })
   .then(res => res.json())
-  .then(() => {
-    alert("Usuario registrado");
-    window.location.href = "services.html";
+  .then(data => {
+
+    msg.style.color = "green";
+    msg.innerText = "✔ Usuario registrado correctamente";
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1000);
+
+  })
+  .catch(err => {
+    console.log(err);
+    msg.style.color = "red";
+    msg.innerText = "❌ Error al registrar usuario";
   });
+
 }
 </script>
+
+</body>
+</html>

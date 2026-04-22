@@ -1,12 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Servicios</title>
+</head>
+<body>
+
 <h2>Selecciona Servicio</h2>
 
-<button onclick="select('mantenimiento')">Mantenimiento</button>
-<button onclick="select('venta')">Venta</button>
-<button onclick="select('entrega')">Entrega</button>
+<button onclick="selectServicio('mantenimiento')">Mantenimiento</button>
+<button onclick="selectServicio('venta')">Venta</button>
+<button onclick="selectServicio('entrega')">Entrega</button>
+
+<p id="msg"></p>
+
+<script src="api.js"></script>
 
 <script>
-function select(servicio) {
+function selectServicio(servicio) {
+
+  const msg = document.getElementById("msg");
+
+  // Guardar servicio seleccionado
   localStorage.setItem("servicio", servicio);
-  window.location.href = "rfid.html";
+
+  msg.innerText = "✔ Servicio seleccionado: " + servicio;
+
+  // Redirección
+  setTimeout(() => {
+    window.location.href = "rfid.html";
+  }, 500);
 }
 </script>
+
+</body>
+</html>

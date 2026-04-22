@@ -1,0 +1,1 @@
+const API_URL = "https://proyectorfid-2.onrender.com";
