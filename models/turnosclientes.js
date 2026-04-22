@@ -11,5 +11,5 @@ const turnosClientesSchema = new mongoose.Schema({
 
 module.exports = mongoose.model("TurnosClientes",   // nombre del modelo (puede ser cualquiera)
   schema,
-  "turnos.clientes"   // 👈 nombre REAL de la colección
+  "clientes"   // 👈 nombre REAL de la colección
 );
