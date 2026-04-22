@@ -9,4 +9,7 @@ const turnosClientesSchema = new mongoose.Schema({
   rfid_uid: String
 });
 
-module.exports = mongoose.model("TurnosClientes", turnosClientesSchema, "turnos.clientes");
+module.exports = mongoose.model("TurnosClientes",   // nombre del modelo (puede ser cualquiera)
+  schema,
+  "turnos.clientes"   // 👈 nombre REAL de la colección
+);
