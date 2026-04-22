@@ -2,6 +2,27 @@ const express = require("express");
 const router = express.Router();
 const TurnosClientes = require("../models/turnosclientes");
 
+// LOGIN SIN CONTRASEÑA (solo cédula)
+router.post("/login", async (req, res) => {
+  try {
+    const { cedula } = req.body;
+
+    const cliente = await TurnosClientes.findOne({ cedula });
+
+    if (!cliente) {
+      return res.status(404).json({ error: "Usuario no registrado" });
+    }
+
+    res.json({
+      mensaje: "Login exitoso",
+      cliente
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Obtener todos los clientes
 router.get("/", async (req, res) => {
   try {
@@ -76,24 +97,5 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// LOGIN SIN CONTRASEÑA (solo cédula)
-router.post("/login", async (req, res) => {
-  try {
-    const { cedula } = req.body;
 
-    const cliente = await TurnosClientes.findOne({ cedula });
-
-    if (!cliente) {
-      return res.status(404).json({ error: "Usuario no registrado" });
-    }
-
-    res.json({
-      mensaje: "Login exitoso",
-      cliente
-    });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 module.exports = router;
