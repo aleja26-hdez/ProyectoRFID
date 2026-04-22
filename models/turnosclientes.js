@@ -9,7 +9,8 @@ const turnosClientesSchema = new mongoose.Schema({
   rfid_uid: String
 });
 
-module.exports = mongoose.model("TurnosClientes",   // nombre del modelo (puede ser cualquiera)
-  schema,
-  "clientes"   // 👈 nombre REAL de la colección
+module.exports = mongoose.model(
+  "TurnosClientes",
+  turnosClientesSchema, // 👈 aquí estaba el error
+  "clientes" // colección en MongoDB
 );
