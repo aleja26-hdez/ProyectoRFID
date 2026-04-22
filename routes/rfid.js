@@ -3,6 +3,12 @@ const router = express.Router();
 
 const Registro = require("../models/Registro");
 
+// ✅ RUTA GET (para probar en navegador)
+router.get("/", (req, res) => {
+  res.send("Ruta RFID funcionando");
+});
+
+// ✅ RUTA POST (la importante para el ESP32)
 router.post("/", async (req, res) => {
   try {
     const { uid } = req.body;
